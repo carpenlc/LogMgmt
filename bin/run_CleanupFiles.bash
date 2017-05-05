@@ -20,5 +20,5 @@ if [ ! -z "$3" ] ; then
     COMMAND+=" -test"
 fi
 
-echo $COMMAND
+#echo $COMMAND
 $COMMAND

@@ -23,3 +23,5 @@ if [ ! -z "$4" ] ; then
     COMMAND+=" -baseOverride=$4"
 fi
 
+#echo $COMMAND
+$COMMAND
