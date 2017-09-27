@@ -17,6 +17,9 @@ if [ ! -z "$2" ] ; then
     COMMAND+=" -age=$2"
 fi
 if [ ! -z "$3" ] ; then
+    COMMAND+=" -pattern=$3"
+fi
+if [ ! -z "$4" ] ; then
     COMMAND+=" -test"
 fi
 
