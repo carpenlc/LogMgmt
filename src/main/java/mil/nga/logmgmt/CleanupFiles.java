@@ -68,38 +68,44 @@ public class CleanupFiles extends InputFile {
         List<Path> candidates = super.getCandidates();
         setAge(age);
         
-        for (Path current : candidates) {
-            try {
-                if (isReady(current)) {
-                    if (test) {
-                        LOGGER.info(method 
-                                + "Test mode [ "
-                                + test 
-                                + " ] file [ "
-                                + current.toString()
-                                + " ] to be deleted.");
-                    }
-                    else {
-                        if (LOGGER.isDebugEnabled()) {
-                            LOGGER.debug(method 
-                                    + "Deleting file [ "
+        if ((candidates != null) && (candidates.size() > 0)) {
+            for (Path current : candidates) {
+                try {
+                    if (isReady(current)) {
+                        if (test) {
+                            LOGGER.info(method 
+                                    + "Test mode [ "
+                                    + test 
+                                    + " ] file [ "
                                     + current.toString()
-                                    + " ].");
+                                    + " ] to be deleted.");
                         }
-                        Files.delete(current);
+                        else {
+                            if (LOGGER.isDebugEnabled()) {
+                                LOGGER.debug(method 
+                                        + "Deleting file [ "
+                                        + current.toString()
+                                        + " ].");
+                            }
+                            Files.delete(current);
+                        }
                     }
                 }
-            }
-            catch (IOException ioe) {
-                LOGGER.error(method 
-                        + "Unexpected IOException processing file [ "
-                        + current.toAbsolutePath()
-                        + " ].  Error message [ "
-                        + ioe.getMessage()
-                        + " ].  Could not obtain file attributes, or "
-                        + "could not delete the file.");
+                catch (IOException ioe) {
+                    LOGGER.error(method 
+                            + "Unexpected IOException processing file [ "
+                            + current.toAbsolutePath()
+                            + " ].  Error message [ "
+                            + ioe.getMessage()
+                            + " ].  Could not obtain file attributes, or "
+                            + "could not delete the file.");
+                }
             }
         }
+        else {
+            LOGGER.info("No files found matching input pattern [ "
+                + pattern
+                + " ].");
     }
     
     /**
