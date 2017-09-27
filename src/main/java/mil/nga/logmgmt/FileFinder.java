@@ -24,6 +24,11 @@ import java.nio.file.attribute.BasicFileAttributes;
  */
 public class FileFinder {
 
+    /**
+     * Default search pattern.
+     */
+    public static final String DEFAULT_PATTERN = "*";
+    
 	/**
 	 * Execute a search on the filesystem for files that match the input 
 	 * pattern.
@@ -77,7 +82,7 @@ public class FileFinder {
 		 */
 		public Finder(String pattern) throws IOException {
 			if ((pattern == null) || (pattern.isEmpty())) {
-				throw new IOException("Usage error:  Search pattern not defined.");
+				pattern = DEFAULT_PATTERN;
 			}
 			_matcher = FileSystems.getDefault().getPathMatcher(
 						"glob:" + pattern);
@@ -142,5 +147,25 @@ public class FileFinder {
             		+ " ].");
             return FileVisitResult.CONTINUE;
         }
+	}
+	
+	
+	public static void main(String[] args) {
+	    
+	    
+	    
+	    
+	    
+	    try {
+    	    List<Path> list = FileFinder.find("/mnt/raster/cadrg/cdrgaupd0517a_1", "*");
+    	    if ((list != null) && (!list.isEmpty())) {
+    	        for (Path path : list) {
+    	            System.out.println(path.toAbsolutePath());
+    	        }
+    	    }
+	    }
+	    catch (IOException ioe) {
+	        ioe.printStackTrace();
+	    }
 	}
 }

@@ -58,10 +58,11 @@ public class CleanupFiles extends InputFile {
 	public CleanupFiles(
 			String directory, 
 			int age, 
+			String pattern,
 			boolean test) 
 					throws InputException {
 		
-		super(directory, "*");
+		super(directory, pattern);
 		
 		String     method     = "Constructor() - ";
 		List<Path> candidates = super.getCandidates();
@@ -198,7 +199,8 @@ public class CleanupFiles extends InputFile {
 		
 		String  method    = "main() - ";
 		String  directory = null;
-		int     age       = -1;
+		String  pattern     = null;
+		int         age       = -1;
 		boolean testMode  = false;
 		
 		// Set up the command line options
@@ -211,7 +213,11 @@ public class CleanupFiles extends InputFile {
 				"age", 
 				Separator.EQUALS, 
 				Multiplicity.ONCE);
-		
+	      opt.getSet().addOption(
+	                "pattern", 
+	                Separator.EQUALS, 
+	                Multiplicity.ZERO_OR_ONE);
+	      
 		opt.getSet().addOption("test", Multiplicity.ZERO_OR_MORE);
 		opt.getSet().addOption("h", Multiplicity.ZERO_OR_MORE);
 		opt.getSet().addOption("help", Multiplicity.ZERO_OR_MORE);
@@ -275,15 +281,31 @@ public class CleanupFiles extends InputFile {
 			System.exit(1);
 		}
 		
+		// Get the directory path
+        if (opt.getSet().isSet("pattern")) {
+            String data = opt.getSet().getOption("pattern").getResultValue(0);
+            if ((data == null) || (data.isEmpty())) {
+                pattern = "*";
+            }
+            else {
+                pattern = data;
+            }
+        }
+        else {
+            pattern = "*";
+        }
+        
 		LOGGER.info(method 
 				+ "Command line arguments supplied: directory [ "
 				+ directory 
 				+ " ], age [ "
 				+ age
+				+ " ], pattern [ "
+				+ pattern
 				+ " ], test [ " 
 				+ testMode 
 				+ " ].");
 		
-		new CleanupFiles(directory, age, testMode);
+		new CleanupFiles(directory, age, pattern, testMode);
 	}
 }
