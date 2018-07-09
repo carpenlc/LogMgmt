@@ -106,6 +106,7 @@ public class CleanupFiles extends InputFile {
             LOGGER.info("No files found matching input pattern [ "
                 + pattern
                 + " ].");
+        }
     }
     
     /**
